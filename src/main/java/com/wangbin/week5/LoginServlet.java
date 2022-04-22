@@ -1,7 +1,6 @@
 package com.wangbin.week5;
 
-
-
+import com.sun.xml.internal.bind.v2.runtime.output.StAXExStreamWriterOutput;
 import com.wangbin.dao.UserDao;
 import com.wangbin.model.User;
 
@@ -69,10 +68,29 @@ public class LoginServlet extends HttpServlet {
             User user = userDao.findByUsernamePassword(con,username,password);
             if(user != null){
                 // login success
-                //setp 8
-                request.setAttribute("user",user);
+
+                // week 8 code - add session code
+                // 2 methods for session
+                // 1. use cookie - Demo #1
+                // s1. creat cookies object
+//                Cookie c = new Cookie("SessionId","" + user.getId()); // sessionid = 70
+                // s2. set age of cookie - in sec
+//                c.setMaxAge(50); //20 seconds (PS: sec -> min eg: 20 * 60 means 20min)
+                // s3. add cookie into response
+//                response.addCookie(c);
+                // 2. use HttpSession object - Demo #2
+                //don't need to do method 1
+                //request.getSession(); // always not null - if have session - return session don't have creat a new one
+                HttpSession session = request.getSession();
+                System.out.println("Session id --> "+session.getId());
+                session.setMaxInactiveInterval(20);// 20min
+                //step 8
+                //request.setAttribute("user",user);
+                //week 8
+                session.setAttribute("user",user); // get in many jsps
+
                 //step 9
-                request.getRequestDispatcher("WEB-INF/views/userInfo.jsp").forward(request,response);
+                //request.getRequestDispatcher("WEB-INF/views/userInfo.jsp").forward(request,response);
 
             }else{
               //out.print("Username or password Error!!!");
