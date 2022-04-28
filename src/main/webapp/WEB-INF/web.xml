@@ -80,4 +80,35 @@
     <welcome-file-list>
         <welcome-file>home</welcome-file> <!-- 1st page home == HomeServlet-->
     </welcome-file-list>
+    <!-- chain of filter -->
+    <!-- 1st -->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.wangbin.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/hello</url-pattern>
+    </filter-mapping>
+
+    <!-- 2nd - write after 1st one in web.xml -->
+
+    <filter>
+        <filter-name>HelloFilter</filter-name>
+        <filter-class>com.wangbin.filter.HelloFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HelloFilter</filter-name>
+        <url-pattern>/hello</url-pattern><!--url of HelloServlet - this filter is only for HelloServlet-->
+    </filter-mapping>
+
+    <!-- 3rd one -->
+    <filter>
+        <filter-name>LoggerFilter</filter-name>
+        <filter-class>com.wangbin.filter.LoggerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoggerFilter</filter-name>
+        <url-pattern>/hello</url-pattern>
+    </filter-mapping>
 </web-app>
