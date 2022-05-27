@@ -8,11 +8,19 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "ShopServlet", value = "/ShopServlet")
 public class ShopServlet extends HttpServlet {
+
+    Connection con = null;
+    @Override
+    public void init() throws ServletException {
+        con =(Connection)getServletContext().getAttribute("dbConn");
+
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Category category = new Category();;
@@ -25,7 +33,7 @@ public class ShopServlet extends HttpServlet {
             if(request.getParameter("categoryId")==null) {
                 productList = productDao.findAll(con);
             } else {
-                int categoryId =  Integer.parseInt(request.getParameter("categoryId"))
+                int categoryId =  Integer.parseInt(request.getParameter("categoryId"));
                 productList = productDao.findByCategoryId(categoryId,con);
             }
         } catch (SQLException throwables) {
